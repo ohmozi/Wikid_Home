@@ -2,7 +2,7 @@ import pymysql
 
 
 def get_connection():
-    conn = pymysql.connect(host='127.0.0.1', user='root', password='oj950306!@', db='minidb', charset='utf8')
+    conn = pymysql.connect(host='127.0.0.1', user='root', password='yourpassword', db='yourdb', charset='utf8')
 
     return conn
 
