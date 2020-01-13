@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- bootstrap CDN -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script>
+        // 회원가입처리
+        function modify_pro(){
+            // 사용자가 입력한 데이터를 가져온다.
+            // id속성이 user_name인 태그에 접근해서 입력한 내용을 가져온다.
+            // user_name = $("#user_name").val()
+            user_id = $("#user_id").val()
+            user_pw1 = $("#user_pw1").val()
+            user_pw2 = $("#user_pw2").val()
+            user_email = $("#user_email").val()
+            user_phone = $("#user_phone").val()
+
+            if(user_pw1.length == 0){
+                alert("비밀번호를 입력해주세요")
+                $("#user_pw1").focus()
+                return
+            }
+            if(user_pw2.length == 0){
+                alert("비밀번호 확인을 입력해주세요")
+                $("#user_pw2").focus()
+                return
+            }
+            if(user_pw1 != user_pw2){
+                alert("비밀번호가 일치하지 않습니다")
+                $("#user_pw1").val("")      // 입력된 내용을 비운다.
+                $("#user_pw2").val("")      // 입력된 내용을 비운다.
+                $("#user_pw1").focus()      // 지정된 태그에 포커스를 준다.
+                return
+            }
+            if(user_email.length == 0){
+                alert("이메일을 입력해주세요")
+                $("#user_email").focus()
+                return
+            }
+
+            if(user_phone.length == 0){
+                alert("핸드폰 번호를 입력해주세요")
+                $("#user_phone").focus()
+                return
+            }
+            // ajax 통신
+            param = {
+                user_id : user_id,
+                user_pw1 : user_pw1,
+                user_email : user_email,
+                user_phone : user_phone
+            }
+            $.ajax({
+                url : 'user_modify_pro',
+                type : 'post',
+                dataType : 'text',
+                data : param,
+                success : function(result){
+                    if(result.trim() == 'OK'){
+                        alert('정보수정이 완료되었습니다\n다시 로그인해 주세요')
+                        location.href = 'user_logout'
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body style="background-color: #FFD7B0">
+    {% include 'include/navigator.html' %}
+    <!-- flask에서 html 코드를 만들때 top_menu.html을 싹 읽어서 이 자리에 넣어준다 -->
+    <!-- 그 해당 파일은 only 코드만 붙여서 만들기 -->
+    <!-- 본문 부분 -->
+    <div class="container" style ="margin-top:90px">
+        <div class="row">
+            <div class="col-4"></div>
+
+            <div class="col-4">
+                <h1 style="text-align:center;">정보수정</h1>
+                <form action="user_login" method="get">
+
+                    <div class="form-group" style="margin-top:50px">
+                        <label for="user_name">이름</label>
+                        <input type="text" class="form-control" name="user_name" id="user_name" value="{{user_data.user_name}}" disabled/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_id">아이디</label>
+                        <input type="text" class="form-control" name="user_id" id="user_id" value="{{user_data.user_id}}" disabled/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_pw1">비밀번호</label>
+                        <input type="password" class="form-control" name="user_pw1" id="user_pw1" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="user_pw2">비밀번호 확인</label>
+                        <input type="password" class="form-control" name="user_pw2" id="user_pw2" value="" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_email">이메일</label>
+                        <input type="text" class="form-control" name="user_email" id="user_email" value="{{user_data.user_email}}" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_phone">전화번호</label>
+                        <input type="text" class="form-control" name="user_phone" id="user_phone" value="{{user_data.user_phone}}" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="clearfix">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-primary" onclick="modify_pro()">수정완료</button>
+                                <a href="/" class="btn btn-danger">취소</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-4"></div>
+        </div>
+
+    </div>
+{% include 'include/footer.html' %}
+</body>
+</html>

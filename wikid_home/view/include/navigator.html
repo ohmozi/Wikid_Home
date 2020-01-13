@@ -1,0 +1,112 @@
+<script>
+    function check_login(number){
+        $.ajax({
+            url:'/login_check',
+            //type: 'get',
+            //dataType : 'text',
+            //data : param,
+            success :function(result){
+                if(result.trim() == 'YES' & number == 1){
+                    location.href = '/board_list'
+                }
+                else if(result.trim() == 'YES' & number == 2){
+                    location.href = '/board_sell_list'
+                }
+                else if(result.trim() == 'YES' & number == 3){
+                    location.href = '/board_buy_list'
+                }
+                else{
+                    alert('로그인을 먼저 해주세요')
+                    location.href = '/user_login'
+                }
+            }
+        })
+    }
+
+    function logout(){
+        $.ajax({
+            url:'/user_logout',
+            success:function(result){
+                alert('로그아웃 되셨습니다.')
+                location.href = '/'
+            }
+        })
+    }
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-light m-0 p-0" style="background-color: #FF6F61">
+    <div class="container-fluid" style="color: white; font-size: 30px; font-family: 'Typo_Dabanggu B'; font-weight: bold;">
+        <a href="/">
+            <img src="/public/logo5.png" alt="logo">
+        </a>
+        <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+                <!--aria-controls="navbarSupportedContent"-->
+                <!--aria-expanded="false" aria-label="Toggle navigation">-->
+            <!--<span class="navbar-toggler-icon"></span>-->
+        <!--</button>-->
+        <div class="collapse navbar-collapse">
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        소개
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">지도</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">게시판</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownBoard">
+                        <li>
+                            <a class="nav-link" href="javascript:void(0)" onclick="check_login(1)">통합 게시판</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="javascript:void(0)" onclick="check_login(2)">판매 게시판</a>
+
+                        </li>
+                        <li>
+                            <a class="nav-link" href="javascript:void(0)" onclick="check_login(3)">구매 게시판</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/FAQ">FAQ</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav nav-right">
+                 {% if session['login'] and session['login'] == 'YES' %}
+                <li class="nav-item" style="color: white; font-size: 15px; font-family: 'Typo_Dabanggu B'; font-weight: bold;">
+                    <a class="nav-link" href="#">{{session['user_idx']}}님 환영합니다</a>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="navbarDropdownLogin"
+                       role="button" aria-haspopup="true"
+                       aria-expanded="false">접속하기
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="navbarDropdownLogin">
+
+                        {% if session['login'] and session['login'] == 'YES' %}
+                        <li class="nav-item">
+                          <a class="nav-link" href="/user_modify">정보수정</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/javascript:void(0);" onclick="logout()">로그아웃</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                          <a class="nav-link" href="/user_login">로그인</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/user_join">회원가입</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index.html</title>
+    <!-- bootstrap CDN -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script>
+        function delete_pw(){
+
+        }
+    </script>
+</head>
+<body style="background-color: #FFD7B0">
+<!-- navigation bar를 include하는 코드 -->
+{% include 'include/navigator.html' %}
+
+<!-- 본문 부분 -->
+<div class="container" style="margin-top:100px">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+                <div class="form-group">
+                    <label for="board_subject">제목</label>
+                    <input type="text" class="form-control" name="board_subject" id="board_subject" value="{{data_dic.content_subject}}" disabled/>
+                </div>
+                <div class="form-group">
+                    <div class="clearfix">
+                        <div class="float-right">
+                            <h6>작성자 : {{data_dic.user_name}}</h6>
+                            <h6>작성시간 : {{data_dic.content_date}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                    <label for="board_status" class="col-1">분류</label>
+                        {% if data_dic.content_status == 2 %}
+                        <input type="text" class="form-control col-2" name="board_status" id="board_status" value="판매" disabled/>
+                        {% elif data_dic.content_status == 1 %}
+                        <input type="text" class="form-control col-2" name="board_status" id="board_status" value="구매" disabled/>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                    <label for="board_place" class="col-1">위치</label>
+                           <input type="text" class="form-control col-4" name="board_place" id="board_place" value="{{data_dic.content_place}}" disabled/>
+                    </div>
+                </div>
+                 <div class="form-group">
+                     <div class = "row">
+                         <label for="board_size" class="col-1">방</label>
+                            <input type="text" class="form-control col-2" name="board_size" id="board_size" value="{{data_dic.content_size}}개" disabled/>
+                     </div>
+
+                </div>
+                <div class="form-group" style="margin-top:20px">
+                    <div class="row">
+                    <label for="board_price" class="col-1">가격</label>
+                    <input type="text" class="form-control col-2" name="board_price" id="board_price" value="{{data_dic.content_price}}만원" disabled/>
+                    </div>
+                    </br>
+                    <div class="row">
+                    <label for="board_start" class="col-1">기간</label>
+                    <input type="text" class="form-control col-2" name="board_start" id="board_start" value="{{data_dic.content_start}}" disabled/> ~
+                    <input type="text" class="form-control col-2" name="board_end" id="board_end" value="{{data_dic.content_end}}" disabled/>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                        <label for="board_content">추가정보</label>
+                        <textarea class="form-control" name="board_content" id="board_content" style="height:200px" disabled>{{data_dic.content_content}}</textarea>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label class="col-2">방 이미지</label>
+                    </br>
+                    {% if data_dic.content_file == None %}
+                        <h1>   No image</h1>
+                    {% else %}
+                        <img src="{{url_for('static', filename=data_dic.content_file)}}" style="max-width: 100%"/>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                        <div class="clearfix">
+                            <div class="float-right">
+                                {% if session['user_idx'] == data_dic.content_writer_idx %}
+                                    <a href="/board_modify/{{data_dic.content_idx}}" class="btn btn-primary">수정</a>
+                                    <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete" id="mod">삭제</a>
+                                    {% include 'board/modal.html' %}
+                                {% endif %}
+
+                                {% if data_dic.content_status == 1 %}
+                                <a href="/board_buy_list" class="btn btn-warning">목록보기</a>
+                                {% elif data_dic.content_status == 2 %}
+                                <a href="/board_sell_list" class="btn btn-warning">목록보기</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+{% include 'include/footer.html' %}
+</body>
+</html>
