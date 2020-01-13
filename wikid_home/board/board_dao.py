@@ -9,7 +9,7 @@ import pymysql
 # 데이터 베이스에 접속하는 함수
 def get_connection() :
     conn = pymysql.connect(host='127.0.0.1', user='root',
-            password='oj950306!@', db='minidb', charset='utf8')
+            password='yourpassword', db='yourdb', charset='utf8')
 
     return conn
 
